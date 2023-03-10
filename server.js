@@ -132,6 +132,34 @@ const client = new MongoClient(url);
 client.connect();
 
 
+app.post('/api/register', async(req, res, next) =>
+{
+  // incoming login, password FirstName, LastName, email
+  // outgoing new  id, error
+
+  const {login, password, FirstName, LastName, Email} = req.body;
+  const newUser = {Login: login, Password: password, FirstName: FirstName, LastName: LastName, Email: Email};
+  let error = '';
+  let newID = -1;
+
+  try
+  {
+    const database = client.db("LargeProject");
+    const result = await database.collection('Users').insertOne(newUser);
+    newID = result.insertedId;
+  }
+  catch(e)
+  {
+    error = e.toString();
+    //await client.close();
+  }
+
+  // send return to front end
+  let ret = {ID: newID, error: error};
+  res.status(200).json(ret);
+});
+
+
 app.post('/api/addcard', async (req, res, next) =>
 {
   // incoming: userId, color
