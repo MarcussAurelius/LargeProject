@@ -187,31 +187,58 @@ app.post('/api/addcard', async (req, res, next) =>
 });
 
 
-app.post('/api/login', async (req, res, next) => 
-{
+//app.post('/api/login', async (req, res, next) => 
+//{
   // incoming: login, password
   // outgoing: id, firstName, lastName, error
 	
- var error = '';
+ //var error = '';
 
-  const { login, password } = req.body;
+  //const { login, password } = req.body;
 
-  const db = client.db("COP4331Cards");
-  const results = await db.collection('Users').find({Login:login,Password:password}).toArray();
+  //const db = client.db("COP4331Cards");
+  //const results = await db.collection('Users').find({Login:login,Password:password}).toArray();
 
-  var id = -1;
-  var fn = '';
-  var ln = '';
+  //var id = -1;
+  //var fn = '';
+  //var ln = '';
 
-  if( results.length > 0 )
-  {
-    id = results[0].UserID;
-    fn = results[0].FirstName;
-    ln = results[0].LastName;
-  }
+  //if( results.length > 0 )
+  //{
+    //id = results[0].UserID;
+    //fn = results[0].FirstName;
+    //ln = results[0].LastName;
+  //}
 
-  var ret = { id:id, firstName:fn, lastName:ln, error:''};
-  res.status(200).json(ret);
+  //var ret = { id:id, firstName:fn, lastName:ln, error:''};
+  //res.status(200).json(ret);
+//});
+app.post('/api/login', async (req, res, next) => 
+{
+ // incoming: login, password
+ // outgoing: id, firstName, lastName, error
+	
+ let error = '';
+
+ const { login, password } = req.body;
+
+ const db = client.db("LargeProject");
+ const results = await db.collection('Users').find({Login:login,Password:password}).toArray();
+
+ var id = -1;
+ var fn = '';
+ var ln = '';
+
+ if( results.length > 0 )
+ {
+  id = results[0]._id;
+  fn = results[0].FirstName;
+  ln = results[0].LastName;
+  em = results[0].Email;
+ }
+
+ var ret = { id:id, firstName:fn, lastName:ln, Email:em, error:''};
+ res.status(200).json(ret);
 });
 
 
